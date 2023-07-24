@@ -1,0 +1,277 @@
+[gd_scene load_steps=21 format=2]
+
+[ext_resource path="res://Sprites/bird.png" type="Texture" id=1]
+[ext_resource path="res://Sprites/background.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/Player.gd" type="Script" id=3]
+[ext_resource path="res://SFX/sfx_wing.wav" type="AudioStream" id=4]
+[ext_resource path="res://SFX/sfx_point.wav" type="AudioStream" id=5]
+[ext_resource path="res://SFX/sfx_hit.wav" type="AudioStream" id=6]
+[ext_resource path="res://Sprites/ground.png" type="Texture" id=7]
+[ext_resource path="res://SFX/sfx_die.wav" type="AudioStream" id=8]
+[ext_resource path="res://Tuberia.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Tuberias.gd" type="Script" id=10]
+[ext_resource path="res://Scripts/main.gd" type="Script" id=11]
+[ext_resource path="res://Fonts/Flappy-Bird.ttf" type="DynamicFontData" id=12]
+[ext_resource path="res://SFX/RetrobBlue - Nobody.wav" type="AudioStream" id=13]
+[ext_resource path="res://icon.png" type="Texture" id=14]
+
+[sub_resource type="CapsuleShape2D" id=6]
+radius = 13.0
+height = 0.0
+
+[sub_resource type="Animation" id=2]
+resource_name = "Aletear"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 0, 2 ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Iddle"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 107, 10 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 104
+outline_color = Color( 0.694118, 0.678431, 0.678431, 1 )
+font_data = ExtResource( 12 )
+
+[node name="main" type="Node2D" groups=["main"]]
+script = ExtResource( 11 )
+
+[node name="Tuberias" type="Node2D" parent="." groups=["tub"]]
+script = ExtResource( 10 )
+offset_x = 202.0
+limite_azar_y_min = -60
+limite_azar_y_max = 280
+
+[node name="Tuberia" parent="Tuberias" groups=["tubo"] instance=ExtResource( 9 )]
+position = Vector2( 378, 100 )
+
+[node name="Tuberia2" parent="Tuberias" groups=["tubo"] instance=ExtResource( 9 )]
+position = Vector2( 580, 100 )
+
+[node name="Tuberia3" parent="Tuberias" groups=["tubo"] instance=ExtResource( 9 )]
+position = Vector2( 782, 100 )
+
+[node name="Tuberia4" parent="Tuberias" groups=["tubo"] instance=ExtResource( 9 )]
+position = Vector2( 984, 100 )
+
+[node name="Tuberia5" parent="Tuberias" groups=["tubo"] instance=ExtResource( 9 )]
+position = Vector2( 1186, 100 )
+
+[node name="Tuberia6" parent="Tuberias" groups=["tubo"] instance=ExtResource( 9 )]
+position = Vector2( 1388, 100 )
+
+[node name="Player" type="RigidBody2D" parent="." groups=["bird"]]
+gravity_scale = 2.0
+contacts_reported = 2
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
+vel_impulso = 130.0
+vel_desp = 50.0
+vel_incrementar = 10.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="Player"]
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 1 )
+hframes = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
+autoplay = "Iddle"
+anims/Aletear = SubResource( 2 )
+anims/Iddle = SubResource( 3 )
+anims/RESET = SubResource( 4 )
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+current = true
+zoom = Vector2( 0.42, 0.42 )
+limit_top = -250
+limit_bottom = 0
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+layer = -1
+
+[node name="Background" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 144, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Background"]
+scale = Vector2( 1, 2.35 )
+texture = ExtResource( 2 )
+
+[node name="Sprite2" type="Sprite" parent="ParallaxBackground/Background"]
+position = Vector2( 144, 0 )
+scale = Vector2( 1, 2.35 )
+texture = ExtResource( 2 )
+
+[node name="Sprite3" type="Sprite" parent="ParallaxBackground/Background"]
+position = Vector2( 431, 0 )
+scale = Vector2( 1, 2.35 )
+texture = ExtResource( 2 )
+
+[node name="Sprite4" type="Sprite" parent="ParallaxBackground/Background"]
+position = Vector2( 574, 0 )
+scale = Vector2( 1, 2.35 )
+texture = ExtResource( 2 )
+
+[node name="Sprite5" type="Sprite" parent="ParallaxBackground/Background"]
+position = Vector2( 861, 0 )
+scale = Vector2( 1, 2.35 )
+texture = ExtResource( 2 )
+
+[node name="Sprite6" type="Sprite" parent="ParallaxBackground/Background"]
+position = Vector2( 1149, 0 )
+scale = Vector2( 1, 2.35 )
+texture = ExtResource( 2 )
+
+[node name="Suelo" type="ParallaxLayer" parent="ParallaxBackground"]
+position = Vector2( -5, 9 )
+motion_mirroring = Vector2( 130, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Suelo"]
+position = Vector2( 68, 380 )
+scale = Vector2( 3.7, 4.4 )
+texture = ExtResource( 7 )
+
+[node name="Sprite2" type="Sprite" parent="ParallaxBackground/Suelo"]
+position = Vector2( 767, 380 )
+scale = Vector2( 3.7, 4.4 )
+texture = ExtResource( 7 )
+
+[node name="Sprite3" type="Sprite" parent="ParallaxBackground/Suelo"]
+position = Vector2( 1462, 380 )
+scale = Vector2( 3.7, 4.4 )
+texture = ExtResource( 7 )
+
+[node name="SFX" type="Node2D" parent="." groups=["sfx"]]
+
+[node name="Aletear" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource( 4 )
+
+[node name="Punto" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource( 5 )
+
+[node name="Hit" type="AudioStreamPlayer" parent="SFX" groups=["bird"]]
+stream = ExtResource( 6 )
+
+[node name="Die" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource( 8 )
+
+[node name="Musica" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource( 13 )
+volume_db = -5.0
+
+[node name="Limites" type="Node2D" parent="." groups=["limites"]]
+position = Vector2( 1, 11 )
+
+[node name="techo" type="KinematicBody2D" parent="Limites"]
+position = Vector2( -2, -247 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Limites/techo"]
+shape = SubResource( 5 )
+
+[node name="suelo" type="KinematicBody2D" parent="Limites" groups=["kill"]]
+position = Vector2( -1, 223 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Limites/suelo"]
+position = Vector2( 2, 42 )
+shape = SubResource( 5 )
+
+[node name="HUD" type="CanvasLayer" parent="." groups=["hud"]]
+
+[node name="boton" type="TouchScreenButton" parent="HUD"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( -6, 0 )
+scale = Vector2( 11.7656, 20.2656 )
+normal = ExtResource( 14 )
+action = "tocar"
+
+[node name="winlose" type="Label" parent="HUD"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -41.0
+margin_bottom = 41.0
+custom_colors/font_color = Color( 0.898039, 0.898039, 0.898039, 1 )
+custom_fonts/font = SubResource( 7 )
+text = "FIN DE LA PARTIDA"
+align = 1
+
+[node name="puntos" type="Label" parent="HUD"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -80.0
+margin_right = 80.0
+margin_bottom = 50.0
+custom_colors/font_color = Color( 0.898039, 0.898039, 0.898039, 1 )
+custom_fonts/font = SubResource( 7 )
+text = "0"
+align = 1
+
+[node name="MessageTimer" type="Timer" parent="HUD"]
+wait_time = 3.0
+one_shot = true
+
+[node name="Iniciar" type="Button" parent="HUD"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -105.5
+margin_top = -546.0
+margin_right = 105.5
+margin_bottom = -458.0
+custom_fonts/font = SubResource( 7 )
+text = "Iniciar"
+
+[connection signal="timeout" from="HUD/MessageTimer" to="." method="_on_MessageTimer_timeout"]
+[connection signal="pressed" from="HUD/Iniciar" to="." method="_on_Iniciar_pressed"]
